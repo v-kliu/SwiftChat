@@ -131,7 +131,7 @@ public class UMessageServerConnection extends Thread {
                     String cmd = line.split(" ")[1];
                     final String[] lineParts = line.split(":");
                     switch (cmd) {
-                        case "PART":
+                        case "QUIT":
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {

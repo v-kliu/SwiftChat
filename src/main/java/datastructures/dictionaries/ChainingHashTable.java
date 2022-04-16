@@ -44,4 +44,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     public Iterator<Item<K, V>> iterator() {
         throw new NotYetImplementedException();
     }
+
+    /**
+     * Temporary fix so that you can debug on IntelliJ properly despite a broken iterator
+     * Remove to see proper String representation (inherited from Dictionary)
+     */
+    @Override
+    public String toString() {
+        return "ChainingHashTable String representation goes here.";
+    }
 }

@@ -20,6 +20,11 @@ public class uMessage {
     private static final int N = 3;
     private static final String CORPUS = "corpus/eggs.txt";
     // Use .binarySearchTreeConstructor(); if you want to test things since it is an implementation we provide and is guaranteed to work
+    // Other examples:
+    // .trieConstructor(NGram.class);
+    // .trieConstructor(AlphabeticString.class);
+    // .hashtableConstructor(NGramTester.avlTreeConstructor());
+    // .hashtableConstructor(NGramTester.binarySearchTreeConstructor());
     private static final Supplier<Dictionary<NGram, Dictionary<AlphabeticString, Integer>>> NEW_OUTER = NGramTester
             .binarySearchTreeConstructor();
     private static final Supplier<Dictionary<AlphabeticString, Integer>> NEW_INNER = NGramTester

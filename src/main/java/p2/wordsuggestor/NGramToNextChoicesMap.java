@@ -73,10 +73,16 @@ public class NGramToNextChoicesMap {
 
         Comparator<Item<String, Integer>> comp = new LargeValueFirstItemComparator<String, Integer>();
         if (k < 0) {
-            InsertionSort.sort(afterNGrams, comp);
+            QuickSort.sort(afterNGrams, comp);
         } else {
-            // You must fix this line toward the end of the project
-            throw new NotYetImplementedException();
+            Comparator<Item<String, Integer>> revComp = (o1, o2) -> comp.compare(o2, o1);
+            TopKSort.sort(afterNGrams, k, revComp);
+            int cutoff = Math.min(k, afterNGrams.length);
+            for (int i = 0; i < cutoff / 2; i++) {
+                Item<String, Integer> temp = afterNGrams[i];
+                afterNGrams[i] = afterNGrams[cutoff - i - 1];
+                afterNGrams[cutoff - i - 1] = temp;
+            }
         }
 
         String[] nextWords = new String[k < 0 ? afterNGrams.length : k];

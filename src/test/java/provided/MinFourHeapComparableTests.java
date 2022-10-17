@@ -1,9 +1,8 @@
-package ckpt2;
-
+package provided;
 
 import cse332.interfaces.worklists.PriorityWorkList;
 import cse332.interfaces.worklists.WorkList;
-import datastructures.worklists.MinFourHeap;
+import datastructures.worklists.MinFourHeapComparable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -14,28 +13,31 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MinFourHeapTests {
+public class MinFourHeapComparableTests {
     private static final int SEED = 42;
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
     public void test_hasWork_empty_noWork() {
-        WorkList<Integer> STUDENT_INT = new MinFourHeap<>(Integer::compareTo);
+        WorkList<Integer> STUDENT_INT = new MinFourHeapComparable<>();
+
         assertFalse(STUDENT_INT.hasWork());
     }
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
     public void test_hasWork_oneElement_hasWork() {
-        WorkList<Integer> STUDENT_INT = new MinFourHeap<>(Integer::compareTo);
+        WorkList<Integer> STUDENT_INT = new MinFourHeapComparable<>();
+
         STUDENT_INT.add(1);
         assertTrue(STUDENT_INT.hasWork());
     }
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_addNextHasWork_manyElements_noWork() {
-        WorkList<Double> STUDENT_DOUBLE = new MinFourHeap<>(Double::compareTo);
+    public void test_hasWork_manyElements_noWork() {
+        WorkList<Double> STUDENT_DOUBLE = new MinFourHeapComparable<>();
+
         for (int i = 0; i < 1000; i++) {
             STUDENT_DOUBLE.add(Math.random());
         }
@@ -46,8 +48,8 @@ public class MinFourHeapTests {
     }
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_peek_fewElements_throwsException() {
-        WorkList<Integer> STUDENT_INT = new MinFourHeap<>(Integer::compareTo);
+    public void test_peek_empty_exceptionThrown() {
+        WorkList<Integer> STUDENT_INT = new MinFourHeapComparable<>();
         assertThrows(NoSuchElementException.class, () -> {
             STUDENT_INT.peek();
         });
@@ -60,8 +62,8 @@ public class MinFourHeapTests {
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_next_fewElements_throwsException() {
-        WorkList<Integer> STUDENT_INT = new MinFourHeap<>(Integer::compareTo);
+    public void test_next_empty_exceptionThrown() {
+        WorkList<Integer> STUDENT_INT = new MinFourHeapComparable<>();
         assertThrows(NoSuchElementException.class, () -> {
             STUDENT_INT.next();
         });
@@ -74,7 +76,7 @@ public class MinFourHeapTests {
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
     public void test_clear_fewElements_empty() {
-        WorkList<String> STUDENT_STR = new MinFourHeap<>(String::compareTo);
+        WorkList<String> STUDENT_STR = new MinFourHeapComparable<>();
         addAll(STUDENT_STR, new String[]{"Beware", "the", "Jabberwock", "my", "son!"});
 
         assertTrue(STUDENT_STR.hasWork());
@@ -93,8 +95,8 @@ public class MinFourHeapTests {
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_addNext_fewElements_correctStructure() {
-        PriorityWorkList<String> heap = new MinFourHeap<>(String::compareTo);
+    public void test_add_fewElements_correct() {
+        PriorityWorkList<String> heap = new MinFourHeapComparable<>();
         String[] tests = { "a", "b", "c", "d", "e" };
         for (int i = 0; i < 5; i++) {
             String str = tests[i] + "a";
@@ -110,10 +112,10 @@ public class MinFourHeapTests {
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_addPeekNext_differentOrderings_correctStructure() {
-        PriorityWorkList<String> ordered = new MinFourHeap<>(String::compareTo);
-        PriorityWorkList<String> reversed = new MinFourHeap<>(String::compareTo);
-        PriorityWorkList<String> random = new MinFourHeap<>(String::compareTo);
+    public void test_addPeekNext_fewElements_correctOrdering() {
+        PriorityWorkList<String> ordered = new MinFourHeapComparable<>();
+        PriorityWorkList<String> reversed = new MinFourHeapComparable<>();
+        PriorityWorkList<String> random = new MinFourHeapComparable<>();
 
         addAll(ordered, new String[]{"a", "b", "c", "d", "e"});
         addAll(reversed, new String[]{"e", "d", "c", "b", "a"});
@@ -136,8 +138,8 @@ public class MinFourHeapTests {
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_addNext_manyElements_correctStructure() {
-        PriorityWorkList<String> heap = new MinFourHeap<>(String::compareTo);
+    public void test_addNext_manyElements_correctOrdering() {
+        PriorityWorkList<String> heap = new MinFourHeapComparable<>();
         int n = 10000;
 
         // Add them
@@ -154,9 +156,9 @@ public class MinFourHeapTests {
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-    public void test_customComparator_manyElements_correctStructure() {
+    public void test_peekNextCustomComparator_manyElements_correctOrdering() {
         Random RAND = new Random(SEED);
-        PriorityWorkList<Coordinate> student = new MinFourHeap<>(Coordinate::compareTo);
+        PriorityWorkList<Coordinate> student = new MinFourHeapComparable<>();
         Queue<Coordinate> reference = new PriorityQueue<>();
 
         for (int i = 0; i < 10000; i++) {
@@ -175,7 +177,7 @@ public class MinFourHeapTests {
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
     public void test_addNext_severalElements_correctStructure() {
-        PriorityWorkList<Integer> heap = new MinFourHeap<>(Integer::compareTo);
+        PriorityWorkList<Integer> heap = new MinFourHeapComparable<>();
         addAll(heap, new Integer[] {10, 10, 15, 1, 17, 16, 100, 101, 102, 103, 105, 106, 107, 108});
 
         Object[] heapData = getField(heap, "data");
@@ -192,6 +194,16 @@ public class MinFourHeapTests {
 
         assertTrue(heapStr.contains(heapExp));
         assertTrue(heapStr2.contains(heapExp2));
+    }
+
+    private boolean isSame(String... args) {
+        String first = args[0];
+        for (String arg : args) {
+            if (!first.equals(arg)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static class Coordinate implements Comparable<Coordinate> {
@@ -213,32 +225,6 @@ public class MinFourHeapTests {
         }
     }
 
-
-    private boolean isSame(String... args) {
-        String first = args[0];
-        for (String arg : args) {
-            if (!first.equals(arg)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    protected static <E> void addAll(WorkList<E> worklist, E[] values) {
-        for (E value : values) {
-            worklist.add(value);
-        }
-    }
-
-    protected static <E> void addAndRemove(WorkList<E> worklist, E value, int amount) {
-        for (int i = 0; i < amount; i++) {
-            worklist.add(value);
-        }
-        for (int i = 0; i < amount; i++) {
-            worklist.next();
-        }
-    }
-
     protected <T> T getField(Object o, String fieldName) {
         try {
             Field field = o.getClass().getSuperclass().getDeclaredField(fieldName);
@@ -256,5 +242,19 @@ public class MinFourHeapTests {
             }
         }
     }
-}
 
+    protected static <E> void addAll(WorkList<E> worklist, E[] values) {
+        for (E value : values) {
+            worklist.add(value);
+        }
+    }
+
+    protected static <E> void addAndRemove(WorkList<E> worklist, E value, int amount) {
+        for (int i = 0; i < amount; i++) {
+            worklist.add(value);
+        }
+        for (int i = 0; i < amount; i++) {
+            worklist.next();
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package ckpt2;
+package provided;
 
 import cse332.datastructures.containers.Item;
 import cse332.datastructures.trees.BinarySearchTree.BSTNode;

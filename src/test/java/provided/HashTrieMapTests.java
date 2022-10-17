@@ -1,4 +1,4 @@
-package ckpt2;
+package provided;
 
 import cse332.types.AlphabeticString;
 import datastructures.dictionaries.HashTrieMap;

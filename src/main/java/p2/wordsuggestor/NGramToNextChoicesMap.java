@@ -7,6 +7,8 @@ import cse332.misc.LargeValueFirstItemComparator;
 import cse332.sorts.InsertionSort;
 import cse332.types.AlphabeticString;
 import cse332.types.NGram;
+import p2.sorts.QuickSort;
+import p2.sorts.TopKSort;
 
 import java.util.Comparator;
 import java.util.Iterator;

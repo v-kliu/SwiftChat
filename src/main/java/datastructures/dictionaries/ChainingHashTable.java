@@ -17,9 +17,8 @@ import java.util.function.Supplier;
  * 5. HashTable should be able to resize its capacity to prime numbers for more
  * than 200,000 elements. After more than 200,000 elements, it should
  * continue to resize using some other mechanism.
- * 6. We suggest you hard code some prime numbers. You can use this
- * list: http://primes.utm.edu/lists/small/100000.txt
- * NOTE: Do NOT copy the whole list!
+ * 6. You should use the prime numbers in the given PRIME_SIZES list to resize
+ * your HashTable with prime numbers.
  * 7. When implementing your iterator, you should NOT copy every item to another
  * dictionary/list and return that dictionary/list's iterator.
  */

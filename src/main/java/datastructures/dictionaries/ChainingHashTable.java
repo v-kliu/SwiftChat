@@ -13,8 +13,7 @@ import java.util.function.Supplier;
  *   restrict the size of the input domain (i.e., it must accept
  *   any key) or the number of inputs (i.e., it must grow as necessary).
  *
- * - ChainingHashTable should rehash as appropriate (use load factor as
- *   shown in class!).
+ * - ChainingHashTable should rehash as appropriate (use load factor as shown in lecture!).
  *
  * - ChainingHashTable must resize its capacity into prime numbers via given PRIME_SIZES list.
  *   Past this, it should continue to resize using some other mechanism (primes not necessary).

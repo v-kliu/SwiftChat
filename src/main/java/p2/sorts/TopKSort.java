@@ -9,9 +9,7 @@ public class TopKSort {
         sort(array, k, (x, y) -> x.compareTo(y));
     }
 
-    /**
-     * Behaviour is undefined when k > array.length
-     */
+
     public static <E> void sort(E[] array, int k, Comparator<E> comparator) {
         throw new NotYetImplementedException();
     }

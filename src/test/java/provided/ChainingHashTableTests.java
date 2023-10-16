@@ -1,6 +1,7 @@
 package provided;
 
 import cse332.datastructures.containers.Item;
+import cse332.datastructures.trees.BinarySearchTree;
 import cse332.interfaces.misc.Dictionary;
 import datastructures.dictionaries.ChainingHashTable;
 import datastructures.dictionaries.MoveToFrontList;
@@ -25,8 +26,11 @@ public class ChainingHashTableTests {
 	@Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
 	public void test_insertFind_manyElements_correctStructure() {
-		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(MoveToFrontList::new);
-
+		/*
+			Replace BinarySearchTree with your own Dictionary implementations like MoveToFrontList or AVLTree
+			to test them as chains for the ChainingHashTable (highly recommended to find potential bugs)
+		* */
+		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(BinarySearchTree::new);
 		int n = 1000;
 
 		// Add them

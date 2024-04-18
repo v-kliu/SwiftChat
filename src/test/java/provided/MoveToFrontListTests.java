@@ -12,6 +12,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MoveToFrontListTests {
+	// MY OWN TESTS
+	@Test()
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	public void test_insertFewItems() {
+		MoveToFrontList<Integer, Integer> list = new MoveToFrontList<Integer, Integer>();
+
+		int[] arr = {6, 5};
+		for(int i = 0; i < arr.length; i++) {
+			Integer oldValue = list.find(arr[i]);
+			if (oldValue == null) {
+				list.insert(arr[i], 1);
+			} else {
+				list.insert(arr[i], 1 + oldValue);
+			}
+		}
+		System.out.println("size is " + list.size());
+		// Convert iterator to string
+		Item<Integer, Integer>[] dcs = (Item<Integer, Integer>[])new Item[list.size()];
+		int i = 0;
+		for (Item<Integer, Integer> item : list) {
+			dcs[i++] = item;
+		}
+		System.out.println("i is " + i);
+
+
+		// Compare strings to make sure we get the right one
+		// Can use list.toString as well, but I'm not sure if students may modify that
+		String mtf_test = Arrays.toString(dcs);
+		assertEquals("[5=1, 6=1]", mtf_test);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test()

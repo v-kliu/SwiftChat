@@ -9,7 +9,7 @@ public class HashTrieSet<A extends Comparable<A>, E extends BString<A>> extends 
      *       the constructor!  */
 
     public HashTrieSet(Class<E> Type) {
-        throw new NotYetImplementedException();
+        // Call the correct super constructor...that's it!
+        super(new HashTrieMap<>(Type));
     }
-
 }

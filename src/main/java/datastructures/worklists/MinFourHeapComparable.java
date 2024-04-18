@@ -11,24 +11,29 @@ import java.util.NoSuchElementException;
  */
 public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWorkList<E> {
     /* Do not change the name of this field; the tests rely on it to work correctly. */
+
+    // Fields to keep track of our heap and size
     private E[] data;
     private int size;
 
+    // Constructor for our heap, set default size to 10
     public MinFourHeapComparable() {
         this.data = (E[]) new Comparable[10];
         this.size = 0;
-        // throw new NotYetImplementedException();
     }
 
+    // Returns if stuff exists in our heap
     @Override
     public boolean hasWork() {
         return this.size != 0;
-        // throw new NotYetImplementedException();
     }
 
+    // Adds to our heap, maintaining structural properties and then percolates up
     @Override
     public void add(E work) {
+        // Checks if we need to resize before adding to our heap which is implemented with an array
         if (this.size == this.data.length - 1) {
+            // Resizes array by doubling size
             E[] newArray = (E[]) new Comparable[this.data.length * 2];
             for (int i = 0; i < this.data.length; i++) {
                 newArray[i] = this.data[i];
@@ -36,58 +41,69 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
             this.data = newArray;
         }
 
-        //System.out.println("this.size and work are :" + this.size + " and " + work);
+        // Gets the index to insert new data, then inserts it, increments size
         int insertHole = percolateUp(this.size, work);
-        //System.out.println("insert hole is " + insertHole);
         this.data[insertHole] = work;
         size++;
-        // throw new NotYetImplementedException();
     }
 
     // Function to percolateUp, returns the index of the hole to
     // insert new value
     public int percolateUp(int hole, E val) {
+        // While we aren't at the root and the parent is a lesser value
         while (hole > 0 && val.compareTo(this.data[(hole - 1) / 4]) < 0) {
+            // Swap parent's data (don't care about child because we insert at end
+            // it's just a 'hole')
             this.data[hole] = this.data[(hole - 1) / 4];
+            // Gets to parent's index
             hole = (hole - 1) / 4;
         }
+        // Returns the index for new data to be inserted
         return hole;
     }
 
+    // Returns the minimum value (first value) in heap
     @Override
     public E peek() {
+        // Exception handling
         if (!hasWork()) {
             throw new NoSuchElementException("Heap is empty in peek!");
         }
+        // Returns first and min data in array/heap
         return this.data[0];
-        // throw new NotYetImplementedException();
     }
 
+    // Next function returns old value and then traverses to next data
     @Override
     public E next() {
+        // Exception handling
         if (!hasWork()) {
             throw new NoSuchElementException("Heap is empty in next!");
         }
+        // Stores the minimum value, brings last value to root, and decrements size
         E minElement = this.data[0];
         this.data[0] = this.data[this.size - 1];
         size--;
-
+        // Begin to percolate down the root until heap is correct format
         percolateDown();
 
-
+        // Return the data we deleted
         return minElement;
-        // throw new NotYetImplementedException();
     }
 
-    // Function to percolateDown
+    // Function to percolateDown, note how it is void, all restructuring occurs within this function
     public void percolateDown() {
+        // Sets hole to root at first, gets root data
         int hole = 0;
         E base = this.data[0];
 
+        // While a child node exists
         while ((4 * hole) + 1 <= this.size - 1) {
+            // Originally set the min child and index to left most child
             int minIndex = (4 * hole) + 1;
             E minChild = this.data[minIndex];
 
+            // For all other existing child nodes, find the min index and min child
             for (int i = 2; i <= 4 && (4 * hole) + i <= size - 1; i++) {
                 if (this.data[(4 * hole) + i].compareTo(minChild) < 0) {
                     minIndex = (4 * hole) + i;
@@ -95,25 +111,28 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
                 }
             }
 
+            // If our parent is larger than a child, we must swap
             if (minChild.compareTo(base) < 0) {
+                // Swap and update hold index
                 this.data[hole] = minChild;
                 hole = minIndex;
-            } else {
+            } else { // Else we break and since heap structure is good and hole is right index
                 break;
             }
         }
+        // Relate the original root data to hole
         this.data[hole] = base;
     }
 
+    // Returns the size of heap
     @Override
     public int size() {
         return this.size;
-        // throw new NotYetImplementedException();
     }
 
+    // 'Clears' heap by setting size to 0
     @Override
     public void clear() {
         this.size = 0;
-        // throw new NotYetImplementedException();
     }
 }

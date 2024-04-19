@@ -24,9 +24,8 @@ import java.util.NoSuchElementException;
  * dictionary/list's iterator.
  */
 public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
-    // Head and size fields, remember this is implemented with a linked list
+    // Head field, size field is inherited, remember this is implemented with a linked list
     private MTFLNode<K, V> head;
-    private int size;
 
     // Class for nodes in the linked list
     private static class MTFLNode<K, V> {
@@ -46,7 +45,6 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
     // Constructor for MoveToFrontList data structure, is null and size is 0 at first
     public MoveToFrontList() {
         this.head = null;
-        this.size = 0;
     }
 
     // Insert method
@@ -86,13 +84,8 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
         MTFLNode<K, V> newNode = new MTFLNode<>(key, value);
         newNode.next = this.head;
         this.head = newNode;
-        this.size++;
+        size++;
         return null;
-    }
-
-    // Size function (was bugging out when inheriting from parent)
-    public int size() {
-        return this.size;
     }
 
     // Finds a key in the linked list, brings to front or returns null

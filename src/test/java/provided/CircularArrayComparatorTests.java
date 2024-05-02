@@ -10,6 +10,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CircularArrayComparatorTests {
+    // MY OWN EQUALS TEST
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void test_equals1() {
+        CircularArrayFIFOQueue<String> l1 = new CircularArrayFIFOQueue<>(15);
+        CircularArrayFIFOQueue<String> l2 = new CircularArrayFIFOQueue<>(15);
+        l1.add("a");
+
+        l2.add("a");
+
+        assertTrue(l1.equals(l2), "Should run true");
+    }
+
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void test_equals2() {
+        CircularArrayFIFOQueue<String> l1 = new CircularArrayFIFOQueue<>(5);
+        CircularArrayFIFOQueue<String> l2 = new CircularArrayFIFOQueue<>(5);
+
+        l1.add("b");
+        l2.add("c");
+
+        assertEquals(false, l1.equals(l2), "Should run false");
+    }
 
     @Test
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)

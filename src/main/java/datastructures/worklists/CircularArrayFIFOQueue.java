@@ -18,7 +18,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
 
     public CircularArrayFIFOQueue(int capacity) {
         super(capacity);
-        this.array = (E[]) new Object[capacity];
+        this.array = (E[]) new Comparable[capacity];
         this.size =  0;
         this.frontIndex = 0;
         this.backIndex = 0;
@@ -109,21 +109,20 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
 //
 //            throw new NotYetImplementedException();
 //        }
-        if (obj == null || this != obj) {
-            return false;
+        if (this == obj) {
+            return true;
         } else if (obj instanceof CircularArrayFIFOQueue == false) {
             return false;
         }
 
         CircularArrayFIFOQueue<E> otherCopy = (CircularArrayFIFOQueue<E>) obj;
-        // FixedSizeFIFOWorkList<E> currentClone = this;
 
         if (this.size() != otherCopy.size()) {
             return false;
         }
 
-        for (int i = 0; i < otherCopy.size(); i++) {
-            if (otherCopy.next() != this.array[i]) {
+        for (int i = 0; i < this.size(); i++) {
+            if (otherCopy.next() != this.array[(frontIndex + i) % capacity()]) {
                 return false;
             }
         }

@@ -90,7 +90,41 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
     @Override
     public int compareTo(FixedSizeFIFOWorkList<E> other) {
         // You will implement this method in project 2. Leave this method unchanged for project 1.
-        throw new NotYetImplementedException();
+        CircularArrayFIFOQueue<E> otherCopy = (CircularArrayFIFOQueue<E>) other;
+        System.out.println("size of otherCOpy is " + otherCopy.size());
+        boolean charRemaining = true;
+        int i = 0;
+
+        while ((this.size - i) > 0 && (otherCopy.size - i) > 0) {
+            //int thisValue = (int) this.array[(frontIndex + i) % capacity()];
+            //int otherValue = (int) otherCopy.next();
+
+            E one = this.array[(frontIndex + i) % capacity()];
+            E two = otherCopy.array[(otherCopy.frontIndex + i) % otherCopy.capacity()];
+
+            int charDifference = one.compareTo(two);
+
+            // int charDifference = this.array[(frontIndex + i) % capacity()].compareTo(otherCopy.next());
+            System.out.println("chars are: " + one + " and " + two + " their difference is " + charDifference);
+
+            if (charDifference == 0) {
+                i++;
+            } else {
+                return charDifference;
+            }
+        }
+
+        if ((this.size - i) > 0) {
+            System.out.println("will return1 " + (this.size - i));
+            return this.size - i;
+        } else if (otherCopy.hasWork()) {
+            System.out.println("will return2 " + ((otherCopy.size - i)));
+            return -(otherCopy.size - i);
+        } else {
+            return 0;
+        }
+
+        // throw new NotYetImplementedException();
     }
 
     @Override
@@ -111,7 +145,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
 //        }
         if (this == obj) {
             return true;
-        } else if (obj instanceof CircularArrayFIFOQueue == false) {
+        } else if (!(obj instanceof CircularArrayFIFOQueue<?>)) {
             return false;
         }
 
@@ -122,7 +156,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
         }
 
         for (int i = 0; i < this.size(); i++) {
-            if (otherCopy.next() != this.array[(frontIndex + i) % capacity()]) {
+            if (otherCopy.array[(otherCopy.frontIndex + i) % otherCopy.capacity()] != this.array[(frontIndex + i) % capacity()]) {
                 return false;
             }
         }

@@ -91,21 +91,13 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
     public int compareTo(FixedSizeFIFOWorkList<E> other) {
         // You will implement this method in project 2. Leave this method unchanged for project 1.
         CircularArrayFIFOQueue<E> otherCopy = (CircularArrayFIFOQueue<E>) other;
-        System.out.println("size of otherCOpy is " + otherCopy.size());
-        boolean charRemaining = true;
         int i = 0;
 
         while ((this.size - i) > 0 && (otherCopy.size - i) > 0) {
-            //int thisValue = (int) this.array[(frontIndex + i) % capacity()];
-            //int otherValue = (int) otherCopy.next();
+            E thisChar = this.array[(frontIndex + i) % capacity()];
+            E otherChar = otherCopy.array[(otherCopy.frontIndex + i) % otherCopy.capacity()];
 
-            E one = this.array[(frontIndex + i) % capacity()];
-            E two = otherCopy.array[(otherCopy.frontIndex + i) % otherCopy.capacity()];
-
-            int charDifference = one.compareTo(two);
-
-            // int charDifference = this.array[(frontIndex + i) % capacity()].compareTo(otherCopy.next());
-            System.out.println("chars are: " + one + " and " + two + " their difference is " + charDifference);
+            int charDifference = thisChar.compareTo(otherChar);
 
             if (charDifference == 0) {
                 i++;
@@ -115,34 +107,18 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
         }
 
         if ((this.size - i) > 0) {
-            System.out.println("will return1 " + (this.size - i));
             return this.size - i;
-        } else if (otherCopy.hasWork()) {
-            System.out.println("will return2 " + ((otherCopy.size - i)));
+        } else if ((otherCopy.size - i) > 0) {
             return -(otherCopy.size - i);
         } else {
             return 0;
         }
-
-        // throw new NotYetImplementedException();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         // You will finish implementing this method in project 2. Leave this method unchanged for project 1.
-//        if (this == obj) {
-//            return true;
-//        } else if (!(obj instanceof FixedSizeFIFOWorkList<?>)) {
-//            return false;
-//        } else {
-//            // Uncomment the line below for p2 when you implement equals
-//            // FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
-//
-//            // Your code goes here
-//
-//            throw new NotYetImplementedException();
-//        }
         if (this == obj) {
             return true;
         } else if (!(obj instanceof CircularArrayFIFOQueue<?>)) {
@@ -160,12 +136,21 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
                 return false;
             }
         }
+
         return true;
     }
 
     @Override
     public int hashCode() {
         // You will implement this method in project 2. Leave this method unchanged for project 1.
-        throw new NotYetImplementedException();
+        final int prime = 31;
+        int result = 1;
+        for (int i = 0; i < size(); i++) {
+            result = prime * result + this.peek(i).hashCode();
+                    //array[(frontIndex + i) % capacity()].hashCode();
+        }
+        return result;
+
+        // throw new NotYetImplementedException();
     }
 }

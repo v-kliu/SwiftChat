@@ -53,6 +53,24 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
     }
 
+    public void displayTree() {
+        displayTree(toAVLNode(root), 0);
+    }
+
+    private void displayTree(AVLNode node, int level) {
+        if (node != null) {
+            displayTree(getRightChild(node), level + 1); // Traverse right subtree
+
+            // Print the node with proper indentation
+            for (int i = 0; i < level; i++) {
+                System.out.print("    "); // 4 spaces for each level
+            }
+            System.out.println(node.key); // Print current node
+
+            displayTree(getLeftChild(node), level + 1); // Traverse left subtree
+        }
+    }
+
     // Helper function to cast any BSTNode to an AVLNode
     public AVLNode toAVLNode(BSTNode node) {
         return (AVLNode) node;
@@ -60,6 +78,10 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
     // Main insert function, will call helper function, returns old value if key already exists
     public V insert(K key, V value) {
+        if (key == null || value == null) {
+            throw new IllegalArgumentException();
+        }
+
         root = insert(toAVLNode(root), key, value);
         return oldValue;
     }
@@ -69,6 +91,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         // PART 1: INSERT AS NORMAL BST NODE
         // Perform standard BST insertion, when you hit null insert
         if (node == null) {
+            size++;
             oldValue = value;
             return new AVLNode(key, value);
         }
@@ -90,11 +113,14 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
         // PART 2: PERFORM CHECKS (AVL PROPERTY)
 
-        // Update the height of the current node
-        node.height = 1 + Math.max(getHeight(toAVLNode(node.children[0])), getHeight(toAVLNode(node.children[1])));
-
         // Check balance
         int balance = checkBalance(node);
+
+//        if (!isAVLTree()) {
+//            System.out.println("failed insert of " + key + " with value " + value);
+//            System.out.println("heights of children nodes are " + getHeight(toAVLNode(node.children[0])) + " and " + getHeight(toAVLNode(node.children[1])));
+//            displayTree();
+//        }
 
         // PART 3: ROTATE IF NECESSARY
 
@@ -120,6 +146,16 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             return leftRotate(node);
         }
 
+        // Update the height of the current node
+        node.height = 1 + Math.max(getHeight(toAVLNode(node.children[0])), getHeight(toAVLNode(node.children[1])));
+
+//        if (!isAVLTree()) {
+//            System.out.println("2failed insert of " + key + " with value " + value);
+//            System.out.println("2heights of children nodes are " + getHeight(toAVLNode(node.children[0])) + " and " + getHeight(toAVLNode(node.children[1])));
+//            displayTree();
+//            System.exit(0);
+//        }
+
         // Recursively goes back up, and returns the current node (probably the children of some parent node)
         return node;
     }
@@ -127,7 +163,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     // Gets the height of the current node
     private int getHeight(AVLNode node) {
         if (node == null) {
-            return 0;
+            return -1; // i think bug has to do something w this
         } else {
             return node.height;
         }
@@ -144,13 +180,16 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
     // Rotates right (for left left case imagine)
     private AVLNode rightRotate(AVLNode miniRoot) {
-        // Sets pointers
-        AVLNode newRoot = toAVLNode(miniRoot.children[0]);
-        AVLNode inBetweenNodes = toAVLNode(newRoot.children[0]);
-
-        // Perform rotation
+//        // Sets pointers
+//        AVLNode newRoot = toAVLNode(miniRoot.children[0]);
+//        AVLNode inBetweenNodes = toAVLNode(newRoot.children[0]);
+//
+//        // Perform rotation
+//        newRoot.children[1] = miniRoot;
+//        miniRoot.children[0] = inBetweenNodes;
+        AVLNode newRoot = (AVLNode) miniRoot.children[0];
+        miniRoot.children[0] = newRoot.children[1];
         newRoot.children[1] = miniRoot;
-        miniRoot.children[0] = inBetweenNodes;
 
         // Update heights
         miniRoot.height = 1 + Math.max(getHeight(toAVLNode(miniRoot.children[0])), getHeight(toAVLNode(miniRoot.children[1])));
@@ -163,12 +202,15 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     // Rotates left (for right right case imagine)
     private AVLNode leftRotate(AVLNode miniRoot) {
         // Sets pointers
-        AVLNode newRoot = toAVLNode(miniRoot.children[1]);
-        AVLNode inBetweenNodes = toAVLNode(newRoot.children[0]);
-
-        // Perform rotation
+//        AVLNode newRoot = toAVLNode(miniRoot.children[1]);
+//        AVLNode inBetweenNodes = toAVLNode(newRoot.children[0]);
+//
+//        // Perform rotation
+//        newRoot.children[0] = miniRoot;
+//        miniRoot.children[1] = inBetweenNodes;
+        AVLNode newRoot = (AVLNode) miniRoot.children[1];
+        miniRoot.children[1] = newRoot.children[0];
         newRoot.children[0] = miniRoot;
-        miniRoot.children[1] = inBetweenNodes;
 
         // Update heights
         miniRoot.height = 1 + Math.max(getHeight(toAVLNode(miniRoot.children[0])), getHeight(toAVLNode(miniRoot.children[1])));
@@ -178,108 +220,150 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         return newRoot;
     }
      
-
-    /* THIS IS CODE TO VERIFY AVL TREE NEEDS TO BE UPDATED
-    public static boolean verifyAVL(AVLNode root) {
-         TODO: Edit this with your code
-        if (root == null) {
-        return true;
-    } else {
-        return (verifyBST(root, getMin(root), getMax(root)) &&
-                verifyAVLHeight(root) && h(root));
-    }
-}
- TODO: Add private methods if you want (recommended)
-// Verifies the height fields of nodes
-public static boolean verifyNodeHeights(AVLNode root) {
-    if (root == null) {
-        return true;
-    } else if (root.height == getHeights(root)) {
-        return verifyNodeHeights(root.left) && verifyNodeHeights(root.right);
-    } else {
-        return false;
-    }
-}
-
-// Gets the heights of nodes recursively
-public static int getHeights(AVLNode root) {
-    if (root == null) {
-        return -1;
-    } else {
-        return (Math.max(getHeights(root.left), getHeights(root.right)) + 1);
-    }
-}
-
-// Somehow make this o(n) or less time
-public static boolean h (AVLNode root) {
-    if (root == null) {
-        return true;
-    } else {
-        if (verifyHeights(root) == -1) {
-            return false;
+    public AVLNode getLeftChild(AVLNode node) {
+        if (node == null) {
+            return null;
         } else {
+            return toAVLNode(node.children[0]);
+        }
+    }
+
+    public AVLNode getRightChild(AVLNode node) {
+        if (node == null) {
+            return null;
+        } else {
+            return toAVLNode(node.children[1]);
+        }
+    }
+
+
+    // VERIFIES AVL TREE
+    public boolean isAVLTree() {
+        return isAVLTree(toAVLNode(root), null, null);
+    }
+
+    private boolean isAVLTree(AVLNode node, K min, K max) {
+        if (node == null) {
             return true;
         }
+
+        // Check BST property
+        if ((min != null && node.key.compareTo(min) <= 0) || (max != null && node.key.compareTo(max) >= 0)) {
+            System.out.println("failed BST property at " + node.key);
+            return false;
+        }
+
+        // Check AVL property
+        int balance = checkBalance(node);
+        if (Math.abs(balance) > 1) {
+            System.out.println("failed AVL property at " + node.key);
+            return false;
+        }
+
+        // Recursively check left and right subtrees
+        return isAVLTree(toAVLNode(node.children[0]), min, node.key) && isAVLTree(toAVLNode(node.children[1]), node.key, max);
     }
-}
 
-
-public static int verifyHeights(AVLNode root) {
-    if (root == null) {
-        return -1;
-    } else {
-        int maxChildHeight = Math.max(verifyHeights(root.left), verifyHeights(root.right));
-        if (root.height == maxChildHeight + 1) {
-            return root.height;
+    /*
+    // THIS IS CODE TO VERIFY AVL TREE NEEDS TO BE UPDATED
+    public boolean verifyAVL(AVLNode root) {
+        if (root == null) {
+            return true;
         } else {
-            return -1;
+            return (verifyBST(root, getMin(root), getMax(root)) &&
+                    verifyAVLHeight(root) && h(root));
         }
     }
-}
-
-
-// Verifies the height property of an AVL tree
-public static boolean verifyAVLHeight(AVLNode root) {
-    if (root == null || (root.left == null && root.right == null)) {
-        return true;
-    } else if (root.left == null) {
-        return verifyAVLHeight(root.right) && Math.abs(root.right.height) < 1;
-    } else if (root.right == null) {
-        return verifyAVLHeight(root.left) && Math.abs(root.left.height) < 1;
-    } else if (Math.abs(root.left.height - root.right.height) < 2) {
-        return verifyAVLHeight(root.left) && verifyAVLHeight(root.right);
-    } else {
-        return false;
+    // Verifies the height fields of nodes
+    public boolean verifyNodeHeights(AVLNode root) {
+        if (root == null) {
+            return true;
+        } else if (root.height == getHeights(root)) {
+            return verifyNodeHeights(getLeftChild(root)) && verifyNodeHeights(getRightChild(root));
+        } else {
+            return false;
+        }
     }
-}
 
-// Verify BST property
-public static boolean verifyBST(AVLNode root, int min, int max) {
-    if (root == null) {
-        return true;
-    } else if (min < root.key && root.key < max) {
-        return (verifyBST(root.left, min, root.key) && verifyBST(root.right, root.key, max));
-    } else {
-        return false;
+    // Gets the heights of nodes recursively
+    public int getHeights(AVLNode root) {
+        if (root == null) {
+            return -1;
+        } else {
+            return (Math.max(getHeights(getLeftChild(root)), getHeights(getRightChild(root))) + 1);
+        }
     }
-}
 
-// Gets min of tree for first iteration
-public static int getMin(AVLNode root) {
-    if (root.left != null) {
-        return getMin(root.left);
-    } else {
-        return root.key - 1;
+    // Somehow make this o(n) or less time
+    public boolean h (AVLNode root) {
+        if (root == null) {
+            return true;
+        } else {
+            if (verifyHeights(root) == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
-}
 
-// Gets max of tree for first iteration
-public static int getMax(AVLNode root) {
-    if (root.right != null) {
-        return getMax(root.right);
-    } else {
-        return root.key + 1;
+
+    public int verifyHeights(AVLNode root) {
+        if (root == null) {
+            return -1;
+        } else {
+            int maxChildHeight = Math.max(verifyHeights(getLeftChild(root)), verifyHeights(getRightChild(root)));
+            if (root.height == maxChildHeight + 1) {
+                return root.height;
+            } else {
+                return -1;
+            }
+        }
     }
-}
-     */
+
+
+    // Verifies the height property of an AVL tree
+    public boolean verifyAVLHeight(AVLNode root) {
+        if (root == null || (getLeftChild(root) == null && getRightChild(root) == null)) {
+            return true;
+        } else if (getLeftChild(root) == null) {
+            return verifyAVLHeight(getRightChild(root)) && Math.abs(getRightChild(root).height) < 1;
+        } else if (getRightChild(root) == null) {
+            return verifyAVLHeight(getLeftChild(root)) && Math.abs(getLeftChild(root).height) < 1;
+        } else if (Math.abs(getLeftChild(root).height - getRightChild(root).height) < 2) {
+            return verifyAVLHeight(getLeftChild(root)) && verifyAVLHeight(getRightChild(root));
+        } else {
+            return false;
+        }
+    }
+
+    // Verify BST property
+    public boolean verifyBST(AVLNode root, int min, int max) {
+        if (root == null) {
+            return true;
+        } else if (min < root.key && root.key < max) {
+            return (verifyBST(getLeftChild(root), min, root.key) && verifyBST(getRightChild(root), root.key, max));
+        } else {
+            return false;
+        }
+    }
+
+    // Gets min of tree for first iteration
+    public K getMin(AVLNode root) {
+        if (getLeftChild(root) != null) {
+            return getMin(getLeftChild(root));
+        } else {
+            return root.key;
+        }
+    }
+
+    // Gets max of tree for first iteration
+    public K getMax(AVLNode root) {
+        if (getRightChild(root) != null) {
+            return getMax(getRightChild(root));
+        } else {
+            return root.key;
+        }
+    }
+    */
 }

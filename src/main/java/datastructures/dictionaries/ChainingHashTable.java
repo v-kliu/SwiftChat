@@ -60,35 +60,43 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             size++;
         }
 
-        int oldSize = capacity;
-
          // Check if resizing is needed
         if ((double) size / capacity > loadFactor) {
-            resizeIndex++;
-            if (resizeIndex < PRIME_SIZES.length) {
-                capacity = PRIME_SIZES[resizeIndex];
-            } else {
-                capacity = capacity * 2 + 1;
-            }
             // Increment resize then update prime size
+            resizeIndex++;
+            int newSize;
+            if (resizeIndex < PRIME_SIZES.length) {
+                newSize = PRIME_SIZES[resizeIndex];
+            } else {
+                newSize = capacity * 2 + 1; // beyond hardcoded primes, just double and add 1
+            }
 
-            Dictionary<K, V>[] newHashTable = (Dictionary<K, V>[]) new Dictionary[capacity];
-            for (int i = 0; i < capacity; i++) {
+            // Create new hash table with new capacity, generate chain for each index
+            Dictionary<K, V>[] newHashTable = (Dictionary<K, V>[]) new Dictionary[newSize];
+            for (int i = 0; i < newSize; i++) {
                 newHashTable[i] = newChain.get();
             }
 
-            for (int i = 0; i < capacity; i++) {
-                if (i < oldSize) {
-                    Iterator<Item<K, V>> chainInterator = chains[i].iterator();
-                    while (chainInterator.hasNext()) {
-                        Item<K, V> currItem = chainInterator.next();
-                        int newHash = currItem.key.hashCode() % capacity;
-                        newHashTable[newHash].insert(currItem.key, currItem.value);
-                    }
-                }
-
+            // Copy old data into new hash table
+            Iterator<Item<K, V>> CHSIterator = this.iterator();
+            while (CHSIterator.hasNext()) {
+                Item<K, V> currItem = CHSIterator.next();
+                int newHash = currItem.key.hashCode() % newSize;
+                newHashTable[newHash].insert(currItem.key, currItem.value);
             }
-            this.chains = newHashTable;
+
+            // Copy old data into new hash table
+//            for (int i = 0; i < oldSize; i++) {
+//                Iterator<Item<K, V>> chainInterator = chains[i].iterator();
+//                while (chainInterator.hasNext()) {
+//                    Item<K, V> currItem = chainInterator.next();
+//                    int newHash = currItem.key.hashCode() % newSize;
+//                    newHashTable[newHash].insert(currItem.key, currItem.value);
+//                }
+//            }
+            // Updates new hash table capacity and hash table itself
+            capacity = newSize;
+            chains = newHashTable;
         }
         return oldValue;
     }
@@ -96,7 +104,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     @Override
     public V find(K key) {
         int hash = key.hashCode() % capacity; // Calculate hash code and convert to positive
-        // Dictionary<K, V> chain = ; // Get the chain corresponding to the hash code
 
         // Find the key in the chain
         V value = chains[hash].find(key);
@@ -150,9 +157,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             throw new NoSuchElementException();
         }
     }
-
-
-
 
     /**
      * Temporary fix so that you can debug on IntelliJ properly despite a broken iterator

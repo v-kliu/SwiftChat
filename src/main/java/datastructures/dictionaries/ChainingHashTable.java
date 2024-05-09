@@ -85,19 +85,12 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
                 newHashTable[newHash].insert(currItem.key, currItem.value);
             }
 
-            // Copy old data into new hash table
-//            for (int i = 0; i < oldSize; i++) {
-//                Iterator<Item<K, V>> chainInterator = chains[i].iterator();
-//                while (chainInterator.hasNext()) {
-//                    Item<K, V> currItem = chainInterator.next();
-//                    int newHash = currItem.key.hashCode() % newSize;
-//                    newHashTable[newHash].insert(currItem.key, currItem.value);
-//                }
-//            }
             // Updates new hash table capacity and hash table itself
             capacity = newSize;
             chains = newHashTable;
         }
+
+        // Returns old value
         return oldValue;
     }
 
@@ -111,11 +104,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         return value;
     }
 
+    // Method that will return iterator object
     @Override
     public Iterator<Item<K, V>> iterator() {
         return new ChainingHashTableIterator();
     }
 
+    // The actual CHS iterator
     private class ChainingHashTableIterator extends SimpleIterator<Item<K, V>> {
         private int chainIndex;  // Index of the current chain
         private Iterator<Item<K, V>> chainIterator;  // Iterator for the current chain

@@ -1,11 +1,14 @@
 package datastructures.dictionaries;
 
 import cse332.exceptions.NotYetImplementedException;
+import cse332.interfaces.misc.DeletelessDictionary;
 import cse332.interfaces.trie.TrieMap;
 import cse332.types.BString;
 import datastructures.worklists.ArrayStack;
+import datastructures.dictionaries.ChainingHashTable;
 
 import java.lang.reflect.Array;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,19 +20,20 @@ import java.util.Map.Entry;
  * for method specifications.
  */
 public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> extends TrieMap<A, K, V> {
-    public class HashTrieNode extends TrieNode<Map<A, HashTrieNode>, HashTrieNode> {
+    public class HashTrieNode extends TrieNode<Dictionary<A, HashTrieNode>, HashTrieNode> {
+        public DeletelessDictionary pointers;
         public HashTrieNode() {
             this(null);
         }
 
         public HashTrieNode(V value) {
-            this.pointers = new HashMap<A, HashTrieNode>();
+            this.pointers = new ChainingHashTable<A, HashTrieNode>(AVLTree<A, HashTrieNode>::new);
             this.value = value;
         }
 
         @Override
         public Iterator<Entry<A, HashTrieMap<A, K, V>.HashTrieNode>> iterator() {
-            return pointers.entrySet().iterator();
+            return pointers.iterator();
         }
     }
 
@@ -54,25 +58,28 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         for (A character : key) {
             // Used for the childNode of the currentNode, gets using the current character
             // of key
-            HashTrieNode childNode = currentNode.pointers.get(character);
+            HashTrieNode childNode = (HashTrieNode) currentNode.pointers.find(character);
 
             // If that childNode (current character of key is not in hashmap of currentNode)
             // then, create a newNode, set currentNode pointer appropriately
             if (childNode == null) {
                 childNode = new HashTrieNode();
-                currentNode.pointers.put(character, childNode);
+                currentNode.pointers.insert(character, childNode);
             }
 
             // Set the currentNode to childNode to iterate for next character
             currentNode = childNode;
+            //System.out.println("currentNode value" + currentNode.value);
         }
         // Sets previousValue to whatever the last currentNode (could be null if we
         // just inserted a new node for the character)
         previousValue = currentNode.value;
 
+        //System.out.println("currentNode value is null" + (currentNode.value == null));
         if (previousValue == null) {
             size++;
         }
+        //System.out.println("size" + size + "currentNode size " + (currentNode.pointers.size()));
 
         // Update the currentNodes value with the value needed to be inserted
         currentNode.value = value;
@@ -93,7 +100,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         // For each character in key
         for (A character : key) {
             // Find the childNode using current character
-            HashTrieNode childNode = currentNode.pointers.get(character);
+            HashTrieNode childNode = (HashTrieNode) currentNode.pointers.find(character);
             // If the childNode is null (dosen't exist), then return null
             if (childNode == null) {
                 return null;
@@ -118,7 +125,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         // For each character in key
         for (A character : key) {
             // Find the childNode using current character
-            HashTrieNode childNode = currentNode.pointers.get(character);
+            HashTrieNode childNode = (HashTrieNode) currentNode.pointers.find(character);
             // If the childNode is null (dosen't exist), then return null
             if (childNode == null) {
                 return false;
@@ -129,7 +136,8 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         // If still haven't exited, then check for edge case that we are still at root,
         // map is empty and root is null, if passes then the key must exist in Trie, return true
-        if (currentNode == (HashTrieNode) this.root && currentNode.value == null && currentNode.pointers.isEmpty()) {
+        if (currentNode == (HashTrieNode) this.root && currentNode.value == null && size == 0) {
+            // System.out.println("size" + currentNode.pointers.size());
             return false;
         }
         return true;
@@ -137,6 +145,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
     @Override
     public void delete(K key) {
+        throw new UnsupportedOperationException("Not supported yet.");
+
+        /*
         // Throws an error if passed key is null
         if (key == null) {
             throw new IllegalArgumentException("Key passed was null!");
@@ -162,7 +173,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
             // For each character in key
             for (A character : key) {
                 // Find the childNode using current character and update currentNode
-                currentNode = currentNode.pointers.get(character);
+                currentNode = (HashTrieNode) currentNode.pointers.find(character);
                 trieNodes.add(currentNode);
                 keyStack.add(character);
             }
@@ -187,16 +198,21 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
                 // Gets parent node, updates currentNode, remove pointer from parent node
                 HashTrieNode parentNode = trieNodes.peek();
-                parentNode.pointers.remove(keyStack.next());
+                parentNode.pointers.delete(keyStack.next());
                 currentNode = parentNode;
             }
         }
+        */
     }
 
     @Override
     public void clear() {
+        throw new UnsupportedOperationException("Not supported yet.");
+
+        /*
         // Resets tree and sets size to 0
         this.root = new HashTrieNode();
         size = 0;
+        */
     }
 }

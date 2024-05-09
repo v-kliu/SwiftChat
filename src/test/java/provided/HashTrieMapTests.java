@@ -14,6 +14,56 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HashTrieMapTests {
+    // MY OWN TESTS
+//    @Test()
+//    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+//    public void test_size1() {
+//        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
+//        String[] words = {"draggin"};
+//        addAll(STUDENT, words);
+//
+//        System.out.println("d" + STUDENT.findPrefix(a("d")));
+//        System.out.println("empty" + STUDENT.findPrefix(a("")));
+//        System.out.println("do" + STUDENT.findPrefix(a("do")));
+//        assertTrue(containsAllPrefixes(STUDENT, "d", "", "do"));
+//        assertTrue(doesNotContainAllPrefixes(STUDENT, "batarang", "dogee", "dragging"));
+//    }
+
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void test_smallInternalStructure() {
+        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
+        STUDENT.insert(a(""), "A");
+        STUDENT.insert(a("foo"), "B");
+        //STUDENT.insert(a("fez"), "C");
+//        STUDENT.insert(a("fezzy"), "D");
+//        STUDENT.insert(a("jazz"), "E");
+//        STUDENT.insert(a("jazzy"), "F");
+
+        MockNode fullExpected = node("A")
+                .branch('f', node()
+                        .branch('o', node()
+                                .branch('o', node("B"))));
+//                        .branch('e', node()
+//                                .branch('z', node("C")
+//                                        .branch('z', node()
+//                                                .branch('y', node("D"))))))
+//                .branch('j', node()
+//                        .branch('a', node()
+//                                .branch('z', node()
+//                                        .branch('z', node("E")
+//                                                .branch('y', node("F"))))));
+
+        System.out.println("find(\"\")" + STUDENT.find(a("")));
+        System.out.println("find(\"foo\")" + STUDENT.find(a("foo")));
+        System.out.println("find(\"fez\")" + STUDENT.find(a("fez")));
+        System.out.println("find(\"fezyz\")" + STUDENT.find(a("fezzy")));
+        System.out.println("find(\"jazz\")" + STUDENT.find(a("jazz")));
+        System.out.println("find(\"jazzy\")" + STUDENT.find(a("jazzy")));
+        System.out.println("find(\"jay\")" + STUDENT.find(a("jay")));
+        assertTrue(equals(fullExpected, getField(STUDENT, "root")));
+    }
+
 
     /**
      * Tests if insert, find, and findPrefix work in general.
@@ -39,6 +89,9 @@ public class HashTrieMapTests {
         String[] words = {"dog", "doggy", "doge", "dragon", "cat", "draggin"};
         addAll(STUDENT, words);
 
+        System.out.println("d" + STUDENT.findPrefix(a("d")));
+        System.out.println("empty" + STUDENT.findPrefix(a("")));
+        System.out.println("do" + STUDENT.findPrefix(a("do")));
         assertTrue(containsAllPrefixes(STUDENT, "d", "", "do"));
         assertTrue(doesNotContainAllPrefixes(STUDENT, "batarang", "dogee", "dragging"));
     }
@@ -152,6 +205,13 @@ public class HashTrieMapTests {
                                 .branch('z', node()
                                         .branch('z', node("E")
                                                 .branch('y', node("F"))))));
+        System.out.println("find(\"\")" + STUDENT.find(a("")));
+        System.out.println("find(\"foo\")" + STUDENT.find(a("foo")));
+        System.out.println("find(\"fez\")" + STUDENT.find(a("fez")));
+        System.out.println("find(\"fezyz\")" + STUDENT.find(a("fezzy")));
+        System.out.println("find(\"jazz\")" + STUDENT.find(a("jazz")));
+        System.out.println("find(\"jazzy\")" + STUDENT.find(a("jazzy")));
+        System.out.println("find(\"jay\")" + STUDENT.find(a("jay")));
         assertTrue(equals(fullExpected, getField(STUDENT, "root")));
     }
 

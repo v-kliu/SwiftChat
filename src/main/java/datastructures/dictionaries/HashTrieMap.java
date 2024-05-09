@@ -1,18 +1,14 @@
 package datastructures.dictionaries;
 
-import cse332.exceptions.NotYetImplementedException;
-import cse332.interfaces.misc.DeletelessDictionary;
+import cse332.datastructures.containers.Item;
+import cse332.interfaces.misc.Dictionary;
 import cse332.interfaces.trie.TrieMap;
 import cse332.types.BString;
-import datastructures.worklists.ArrayStack;
-import datastructures.dictionaries.ChainingHashTable;
 
-import java.lang.reflect.Array;
-import java.util.Dictionary;
-import java.util.HashMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 /**
  * See cse332/interfaces/trie/TrieMap.java
@@ -21,19 +17,37 @@ import java.util.Map.Entry;
  */
 public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> extends TrieMap<A, K, V> {
     public class HashTrieNode extends TrieNode<Dictionary<A, HashTrieNode>, HashTrieNode> {
-        public DeletelessDictionary pointers;
+        // public DeletelessDictionary pointers; // TODO: make sure this right, and why fail that one test??
         public HashTrieNode() {
             this(null);
         }
 
         public HashTrieNode(V value) {
-            this.pointers = new ChainingHashTable<A, HashTrieNode>(AVLTree<A, HashTrieNode>::new);
+            this.pointers = new ChainingHashTable<>(AVLTree::new);
             this.value = value;
         }
 
         @Override
         public Iterator<Entry<A, HashTrieMap<A, K, V>.HashTrieNode>> iterator() {
-            return pointers.iterator();
+            // return pointers.iterator();
+            return new Iterator<Entry<A, HashTrieNode>>() {
+                Iterator<Item<A, HashTrieNode>> pointersItr = pointers.iterator();
+                @Override
+                public boolean hasNext() {
+                    return pointersItr.hasNext();
+                }
+
+                @Override
+                public Entry<A, HashTrieNode> next() {
+                    if (!hasNext()) {
+                        throw new NoSuchElementException();
+                    }
+
+                    Item<A, HashTrieNode> next = pointersItr.next();
+                    Entry<A, HashTrieNode> entry = new SimpleEntry<>(next.key, next.value);
+                    return entry;
+                }
+            };
         }
     }
 
@@ -118,6 +132,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if (key == null) {
             throw new IllegalArgumentException("Key passed was null!");
         }
+//        if (size == 0) {
+//            return false;
+//        }
 
         // Sets currentNode to root to traverse Trie
         HashTrieNode currentNode = (HashTrieNode) this.root;

@@ -132,9 +132,12 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
         }
 
         for (int i = 0; i < this.size(); i++) {
-            if (otherCopy.array[(otherCopy.frontIndex + i) % otherCopy.capacity()] != this.array[(frontIndex + i) % capacity()]) {
+            if (this.peek(i).compareTo(otherCopy.peek(i)) != 0) {
                 return false;
             }
+//            if (!otherCopy.array[(otherCopy.frontIndex + i) % otherCopy.capacity()].equals(this.array[(frontIndex + i) % capacity()])) {
+//                return false;
+//            }
         }
 
         return true;

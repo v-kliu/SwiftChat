@@ -15,7 +15,7 @@ public class AutocompleteTrie extends HashTrieMap<Character, AlphabeticString, I
         @SuppressWarnings("unchecked")
         HashTrieNode current = (HashTrieNode) this.root;
         for (Character item : key.toCharArray()) {
-            if (current.pointers.find(item) != null) {
+            if (current.pointers.find(item) != null) { // TODO: What??? it returns null if value is null too so is this bad?
                 return null;
             }
             else {

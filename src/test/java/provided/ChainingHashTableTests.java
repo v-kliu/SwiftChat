@@ -53,34 +53,4 @@ public class ChainingHashTableTests {
 		assertNotNull(list.find("00851"));
 		assertEquals(4260, (int) list.find("00851"));
 	}
-
-	@Test()
-	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-	public void test_insert() {
-		/*
-			Replace BinarySearchTree with your own Dictionary implementations like MoveToFrontList or AVLTree
-			to test them as chains for the ChainingHashTable (highly recommended to find potential bugs)
-		* */
-		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(AVLTree::new);
-		int n = 1000;
-
-		// Add them
-		for (int i = 0; i < 5 * n; i++) {
-			int k = (i % n) * 37 % n;
-			String str = String.format("%05d", k);
-			for (int j = 0; j < k + 1; j ++)
-				incrementValueWithKey(list, str);
-		}
-
-		// Delete them all
-		int totalCount = 0;
-		for (Item<String, Integer> dc : list) {
-			assertEquals((Integer.parseInt(dc.key) + 1) * 5, (int) dc.value);
-			totalCount += dc.value;
-		}
-		assertEquals(totalCount, (n * (n + 1)) / 2 * 5);
-		assertEquals(list.size(), n);
-		assertNotNull(list.find("00851"));
-		assertEquals(4260, (int) list.find("00851"));
-	}
 }

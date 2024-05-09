@@ -10,6 +10,11 @@ public class QuickSort {
     }
 
     public static <E> void sort(E[] array, Comparator<E> comparator) {
+
         throw new NotYetImplementedException();
+    }
+
+    public static <E> void sort(E[] array, int lo, int hi, Comparator<E> comparator) {
+
     }
 }

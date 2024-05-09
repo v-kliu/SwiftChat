@@ -39,9 +39,9 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         this.newChain = newChain;
         resizeIndex = 0;
         capacity = PRIME_SIZES[resizeIndex]; // Start with the first prime size
-        size = 0;
         loadFactor = 0.75; // Default load factor threshold
         chains = (Dictionary<K, V>[]) new Dictionary[capacity];
+        size = 0;
         for (int i = 0; i < capacity; i++) {
             chains[i] = newChain.get(); // Initialize each chain
         }
@@ -57,7 +57,8 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
         // Update size if a new key was inserted
         if (oldValue == null) {
-            size++;
+            this.size++;
+            System.out.println("Size: " + size());
         }
 
          // Check if resizing is needed

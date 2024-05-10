@@ -49,7 +49,11 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
     @Override
     public V insert(K key, V value) {
-        int hash = key.hashCode() % capacity; // Calculate hash code and convert to positive
+        if (key == null || value == null) {
+            throw new IllegalArgumentException();
+        }
+
+        int hash = Math.abs(key.hashCode()) % capacity; // Calculate hash code and convert to positive
         // Dictionary<K, V> chain = chains[hash]; // Get the chain corresponding to the hash code
 
         // Insert the key-value pair into the chain
@@ -58,7 +62,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         // Update size if a new key was inserted
         if (oldValue == null) {
             this.size++;
-            System.out.println("Size: " + size());
         }
 
          // Check if resizing is needed
@@ -82,7 +85,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             Iterator<Item<K, V>> CHSIterator = this.iterator();
             while (CHSIterator.hasNext()) {
                 Item<K, V> currItem = CHSIterator.next();
-                int newHash = currItem.key.hashCode() % newSize;
+                int newHash = Math.abs(currItem.key.hashCode()) % newSize;
                 newHashTable[newHash].insert(currItem.key, currItem.value);
             }
 
@@ -97,7 +100,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
     @Override
     public V find(K key) {
-        int hash = key.hashCode() % capacity; // Calculate hash code and convert to positive
+        int hash = Math.abs(key.hashCode()) % capacity; // Calculate hash code and convert to positive
 
         // Find the key in the chain
         V value = chains[hash].find(key);

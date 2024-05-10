@@ -1,6 +1,7 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.containers.Item;
+import cse332.datastructures.trees.BinarySearchTree;
 import cse332.interfaces.misc.Dictionary;
 import cse332.interfaces.trie.TrieMap;
 import cse332.types.BString;
@@ -17,7 +18,6 @@ import java.util.NoSuchElementException;
  */
 public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> extends TrieMap<A, K, V> {
     public class HashTrieNode extends TrieNode<Dictionary<A, HashTrieNode>, HashTrieNode> {
-        // public DeletelessDictionary pointers; // TODO: make sure this right, and why fail that one test??
         public HashTrieNode() {
             this(null);
         }

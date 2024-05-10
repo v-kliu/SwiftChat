@@ -18,6 +18,7 @@ public class TopKSortTests {
 		Integer[] arr_sorted = {7, 8, 9, 10};
 		TopKSort.sort(arr, K, Integer::compareTo);
 		for(int i = 0; i < K; i++) {
+			System.out.println("sorted: " + arr_sorted[i] + " vs " + arr[i]);
 			assertEquals(arr_sorted[i], arr[i]);
 		}
 	}

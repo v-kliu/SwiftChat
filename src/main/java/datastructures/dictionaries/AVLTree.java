@@ -62,7 +62,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         if (key == null || value == null) {
             throw new IllegalArgumentException();
         }
-
+        oldValue = null;
         root = insert(toAVLNode(root), key, value);
         return oldValue;
     }
@@ -73,7 +73,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         // Perform standard BST insertion, when you hit null insert, increments size and stores old value
         if (node == null) {
             size++;
-            oldValue = value;
+            // oldValue = value;
             return new AVLNode(key, value);
         }
 

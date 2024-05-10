@@ -5,6 +5,10 @@ import cse332.interfaces.worklists.LIFOWorkList;
 import cse332.misc.WordReader;
 import cse332.types.AlphabeticString;
 import cse332.types.NGram;
+import datastructures.dictionaries.AVLTree;
+import datastructures.dictionaries.ChainingHashTable;
+import datastructures.dictionaries.HashTrieMap;
+import datastructures.dictionaries.MoveToFrontList;
 import datastructures.worklists.ArrayStack;
 
 import java.io.FileNotFoundException;
@@ -26,7 +30,8 @@ public class WordSuggestor {
             throws IOException {
         this.N = N;
         this.K = K;
-        this.ngrams = new NGramToNextChoicesMap(newOuter, newInner);
+        // moveToFotnlist, avltree, chaininghashtable, hashtriemap
+        this.ngrams = new NGramToNextChoicesMap(() -> new ChainingHashTable<>(AVLTree::new), () -> new HashTrieMap<>(AlphabeticString.class));
 
         WordReader reader = new WordReader(new FileReader(file));
         int i = 0;

@@ -31,7 +31,7 @@ public class ChainingHashTableTests {
 			Replace BinarySearchTree with your own Dictionary implementations like MoveToFrontList or AVLTree
 			to test them as chains for the ChainingHashTable (highly recommended to find potential bugs)
 		* */
-		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(BinarySearchTree::new);
+		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(AVLTree::new);
 		int n = 1000;
 
 		// Add them

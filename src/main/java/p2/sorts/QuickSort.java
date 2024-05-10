@@ -29,22 +29,20 @@ public class QuickSort {
             int smaller = lo + 1;
             int bigger = hi;
 
-            while (smaller < bigger) {
-                while (smaller < bigger && comparator.compare(array[smaller], pivotElement) <= 0) {
+            while (smaller <= bigger) {
+                while (smaller <= bigger && comparator.compare(array[smaller], pivotElement) <= 0) {
                     smaller++;
                 }
-                while (bigger > smaller && comparator.compare(array[bigger], pivotElement) > 0) {
+                while (bigger >= smaller && comparator.compare(array[bigger], pivotElement) > 0) {
                     bigger--;
                 }
-
-                swap(array, smaller, bigger);
-                smaller++;
-                bigger--;
+                if (bigger > smaller) {
+                    swap(array, smaller, bigger);
+                    smaller++;
+                    bigger--;
+                }
             }
-            //System.out.println("right before" + Arrays.toString(array));
             swap(array, lo, bigger);
-
-            //System.out.println("right after: " + Arrays.toString(array));
 
             sort(array, lo, bigger - 1, comparator);
             sort(array, bigger + 1, hi, comparator);

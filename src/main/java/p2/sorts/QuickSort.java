@@ -41,10 +41,10 @@ public class QuickSort {
                 smaller++;
                 bigger--;
             }
-            System.out.println("right before" + Arrays.toString(array));
+            //System.out.println("right before" + Arrays.toString(array));
             swap(array, lo, bigger);
 
-            System.out.println("right after: " + Arrays.toString(array));
+            //System.out.println("right after: " + Arrays.toString(array));
 
             sort(array, lo, bigger - 1, comparator);
             sort(array, bigger + 1, hi, comparator);

@@ -15,23 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HashTrieMapTests {
     // MY OWN TESTS
-//    @Test()
-//    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
-//    public void test_size1() {
-//        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
-//        String[] words = {"draggin"};
-//        addAll(STUDENT, words);
-//
-//        System.out.println("d" + STUDENT.findPrefix(a("d")));
-//        System.out.println("empty" + STUDENT.findPrefix(a("")));
-//        System.out.println("do" + STUDENT.findPrefix(a("do")));
-//        assertTrue(containsAllPrefixes(STUDENT, "d", "", "do"));
-//        assertTrue(doesNotContainAllPrefixes(STUDENT, "batarang", "dogee", "dragging"));
-//    }
 
 
 
-
+    // END MY OWN TESTS
     /**
      * Tests if insert, find, and findPrefix work in general.
      */

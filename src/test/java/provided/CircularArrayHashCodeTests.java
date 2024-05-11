@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CircularArrayHashCodeTests {
-
 	@Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
 	public void test_hashCode_fewElements_equal() {

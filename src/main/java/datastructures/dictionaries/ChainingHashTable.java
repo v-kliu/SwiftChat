@@ -49,12 +49,12 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
     @Override
     public V insert(K key, V value) {
+        // Exception handling for null
         if (key == null || value == null) {
             throw new IllegalArgumentException();
         }
-
-        int hash = Math.abs(key.hashCode()) % capacity; // Calculate hash code and convert to positive
-        // Dictionary<K, V> chain = chains[hash]; // Get the chain corresponding to the hash code
+        // Calculate hash code and convert to positive
+        int hash = Math.abs(key.hashCode()) % capacity;
 
         // Insert the key-value pair into the chain
         V oldValue = chains[hash].insert(key, value);
@@ -100,7 +100,12 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
     @Override
     public V find(K key) {
-        int hash = Math.abs(key.hashCode()) % capacity; // Calculate hash code and convert to positive
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null");
+        }
+
+        // Calculate hash code and convert to positive
+        int hash = Math.abs(key.hashCode()) % capacity;
 
         // Find the key in the chain
         V value = chains[hash].find(key);

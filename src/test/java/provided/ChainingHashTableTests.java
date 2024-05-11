@@ -31,7 +31,7 @@ public class ChainingHashTableTests {
 			Replace BinarySearchTree with your own Dictionary implementations like MoveToFrontList or AVLTree
 			to test them as chains for the ChainingHashTable (highly recommended to find potential bugs)
 		* */
-		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(AVLTree::new);
+		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(MoveToFrontList::new);
 		int n = 1000;
 
 		// Add them
@@ -46,6 +46,37 @@ public class ChainingHashTableTests {
 		int totalCount = 0;
 		for (Item<String, Integer> dc : list) {
 			assertEquals((Integer.parseInt(dc.key) + 1) * 5, (int) dc.value);
+			totalCount += dc.value;
+		}
+		assertEquals(totalCount, (n * (n + 1)) / 2 * 5);
+		assertEquals(list.size(), n);
+		assertNotNull(list.find("00851"));
+		assertEquals(4260, (int) list.find("00851"));
+	}
+
+	@Test()
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	public void test_insertFind_manyElements_withDuplicates_correctStructure() {
+    /*
+       Replace BinarySearchTree with your own Dictionary implementations like MoveToFrontList or AVLTree
+       to test them as chains for the ChainingHashTable (highly recommended to find potential bugs)
+    * */
+		ChainingHashTable<String, Integer> list = new ChainingHashTable<>(MoveToFrontList::new);
+		int n = 1000;
+
+		// Add them with duplicates
+		for (int i = 0; i < 5 * n; i++) {
+			int k = i % n; // Generate duplicate keys
+			String str = String.format("%05d", k);
+			for (int j = 0; j < k + 1; j++)
+				incrementValueWithKey(list, str);
+		}
+
+		// Check the values and counts
+		int totalCount = 0;
+		for (Item<String, Integer> dc : list) {
+			int expectedValue = (Integer.parseInt(dc.key) + 1) * 5;
+			assertEquals(expectedValue, (int) dc.value);
 			totalCount += dc.value;
 		}
 		assertEquals(totalCount, (n * (n + 1)) / 2 * 5);

@@ -17,19 +17,21 @@ import java.util.NoSuchElementException;
  * for method specifications.
  */
 public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> extends TrieMap<A, K, V> {
+    // Class for HashTrieNode
     public class HashTrieNode extends TrieNode<Dictionary<A, HashTrieNode>, HashTrieNode> {
         public HashTrieNode() {
             this(null);
         }
 
         public HashTrieNode(V value) {
+            // Could modify which data structure to use for ChainingHashTable to test
             this.pointers = new ChainingHashTable<>(AVLTree::new);
             this.value = value;
         }
 
         @Override
         public Iterator<Entry<A, HashTrieMap<A, K, V>.HashTrieNode>> iterator() {
-            // return pointers.iterator();
+            // Iterator (needs to change entry to item type)
             return new Iterator<Entry<A, HashTrieNode>>() {
                 Iterator<Item<A, HashTrieNode>> pointersItr = pointers.iterator();
                 @Override
@@ -39,10 +41,11 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
                 @Override
                 public Entry<A, HashTrieNode> next() {
+                    // Error checking
                     if (!hasNext()) {
                         throw new NoSuchElementException();
                     }
-
+                    // Converts Item to Entry
                     Item<A, HashTrieNode> next = pointersItr.next();
                     Entry<A, HashTrieNode> entry = new SimpleEntry<>(next.key, next.value);
                     return entry;
@@ -83,17 +86,14 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
             // Set the currentNode to childNode to iterate for next character
             currentNode = childNode;
-            //System.out.println("currentNode value" + currentNode.value);
         }
         // Sets previousValue to whatever the last currentNode (could be null if we
         // just inserted a new node for the character)
         previousValue = currentNode.value;
 
-        //System.out.println("currentNode value is null" + (currentNode.value == null));
         if (previousValue == null) {
             size++;
         }
-        //System.out.println("size" + size + "currentNode size " + (currentNode.pointers.size()));
 
         // Update the currentNodes value with the value needed to be inserted
         currentNode.value = value;
@@ -132,9 +132,6 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if (key == null) {
             throw new IllegalArgumentException("Key passed was null!");
         }
-//        if (size == 0) {
-//            return false;
-//        }
 
         // Sets currentNode to root to traverse Trie
         HashTrieNode currentNode = (HashTrieNode) this.root;
@@ -154,7 +151,6 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         // If still haven't exited, then check for edge case that we are still at root,
         // map is empty and root is null, if passes then the key must exist in Trie, return true
         if (currentNode == (HashTrieNode) this.root && currentNode.value == null && size == 0) {
-            // System.out.println("size" + currentNode.pointers.size());
             return false;
         }
         return true;

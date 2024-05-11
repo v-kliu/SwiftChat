@@ -30,7 +30,6 @@ import java.lang.reflect.Array;
  */
 
 public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTree<K, V> {
-    // TODO: Implement me!
     // Field to return old value if key already exists
     V oldValue;
 
@@ -73,7 +72,6 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         // Perform standard BST insertion, when you hit null insert, increments size and stores old value
         if (node == null) {
             size++;
-            // oldValue = value;
             return new AVLNode(key, value);
         }
 
@@ -178,70 +176,5 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
         // Return new root
         return newRoot;
-    }
-
-    // EXTRA CODE
-    // Helps print the tree for debugging purposes
-    public void displayTree() {
-        displayTree(toAVLNode(root), 0);
-    }
-
-    private void displayTree(AVLNode node, int level) {
-        if (node != null) {
-            displayTree(getRightChild(node), level + 1); // Traverse right subtree
-
-            // Print the node with proper indentation
-            for (int i = 0; i < level; i++) {
-                System.out.print("    "); // 4 spaces for each level
-            }
-            System.out.println(node.key); // Print current node
-
-            displayTree(getLeftChild(node), level + 1); // Traverse left subtree
-        }
-    }
-     
-    public AVLNode getLeftChild(AVLNode node) {
-        if (node == null) {
-            return null;
-        } else {
-            return toAVLNode(node.children[0]);
-        }
-    }
-
-    public AVLNode getRightChild(AVLNode node) {
-        if (node == null) {
-            return null;
-        } else {
-            return toAVLNode(node.children[1]);
-        }
-    }
-
-
-    // EXTRA CODE
-    // VERIFIES AVL TREE
-    public boolean isAVLTree() {
-        return isAVLTree(toAVLNode(root), null, null);
-    }
-
-    private boolean isAVLTree(AVLNode node, K min, K max) {
-        if (node == null) {
-            return true;
-        }
-
-        // Check BST property
-        if ((min != null && node.key.compareTo(min) <= 0) || (max != null && node.key.compareTo(max) >= 0)) {
-            System.out.println("failed BST property at " + node.key);
-            return false;
-        }
-
-        // Check AVL property
-        int balance = checkBalance(node);
-        if (Math.abs(balance) > 1) {
-            System.out.println("failed AVL property at " + node.key);
-            return false;
-        }
-
-        // Recursively check left and right subtrees
-        return isAVLTree(toAVLNode(node.children[0]), min, node.key) && isAVLTree(toAVLNode(node.children[1]), node.key, max);
     }
 }

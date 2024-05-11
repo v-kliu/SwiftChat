@@ -6,7 +6,6 @@ import cse332.interfaces.misc.Dictionary;
 import datastructures.dictionaries.AVLTree;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +22,10 @@ public class AVLTreeTests {
 			tree.insert(key, value + 1);
 		}
 	}
+
+	// OWN TESTS
+
+
 
 	@SuppressWarnings("rawtypes")
 	@Test()

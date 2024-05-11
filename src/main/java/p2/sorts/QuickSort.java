@@ -11,39 +11,52 @@ public class QuickSort {
     }
     public final static int CUTOFF = 10;
 
+    // Main sort function
     public static <E> void sort(E[] array, Comparator<E> comparator) {
-        System.out.println(Arrays.toString(array));
         sort(array, 0, array.length - 1, comparator);
-        // throw new NotYetImplementedException();
     }
 
+    // Helper method to sort area (is recursive and has additional parameters to specify range)
     public static <E> void sort(E[] array, int lo, int hi, Comparator<E> comparator) {
-        if (hi - lo <= 10) {
+        // If range is below a threshold, use insertion sort
+        if (hi - lo <= CUTOFF) {
             insertionSort(array, lo, hi, comparator);
-            // throw new NotYetImplementedException(); // do insertion sort
-        } else {
+        } else { // Else use quick sort
+            // Pick a pivot (just gets median), stores value, and moves it to first position
             int pivot = (lo + hi) / 2;
             E pivotElement = array[pivot];
             swap(array, pivot, lo);
 
+            // Gets 'pointers' for quick sort, represent indices
             int smaller = lo + 1;
             int bigger = hi;
 
+            // While our pointers haven't crossed
             while (smaller <= bigger) {
+                // While haven't crossed, we are moving smallest pointer forward till
+                // we find a value that is greater than the pivot
                 while (smaller <= bigger && comparator.compare(array[smaller], pivotElement) <= 0) {
                     smaller++;
                 }
+                // While haven't crossed, we are moving biggest pointer backward till
+                // we find a value that is less than the pivot
                 while (bigger >= smaller && comparator.compare(array[bigger], pivotElement) > 0) {
                     bigger--;
                 }
+                // At this point both pointers are pointing to an element that is in the wrong
+                // spot and that needs to be swapped
+
+                // Additional error checking, then swap elements, and modify pointer indexes
                 if (bigger > smaller) {
                     swap(array, smaller, bigger);
                     smaller++;
                     bigger--;
                 }
             }
+            // Move pivot back to where it belongs
             swap(array, lo, bigger);
 
+            // Perform recursive calls on two smaller subarrays
             sort(array, lo, bigger - 1, comparator);
             sort(array, bigger + 1, hi, comparator);
         }
@@ -56,6 +69,7 @@ public class QuickSort {
         array[j] = temp;
     }
 
+    // Helper function for insertion sort (just has additional parameters to specify range)
     public static <E> void insertionSort(E[] array, int lo, int hi, Comparator<E> comparator) {
         for (int i = lo + 1; i <= hi; i++) {
             E x = array[i];
@@ -67,15 +81,4 @@ public class QuickSort {
             array[j + 1] = x;
         }
     }
-
-//    public static <E> int partition(E[] array, int lo, int hi, Comparator<E> comparator) {
-//        E firstElement = array[lo];
-//        E middleElement = array[(lo + hi) / 2];
-//        E lastElement = array[hi];
-//
-//    }
-//
-//    public static <E> E getMax(E e1, E e2, Comparator<E> comparator) {
-//        return comparator.compare(e1, e2) > 0 ? e1 : e2;
-//    }
 }

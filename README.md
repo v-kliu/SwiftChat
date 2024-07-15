@@ -33,9 +33,9 @@ The custom data structures implemented for this project can be found in the foll
 - `src/main/java/datastructures/worklists/MinFourHeapComparable.java`
 
 ### Sorts:
-- `src/main/java/sorts/HeapSort.java`
-- `src/main/java/sorts/QuickSort.java`
-- `src/main/java/sorts/TopKSort.java`
+- `src/main/java/p2/sorts/HeapSort.java`
+- `src/main/java/p2/sorts/QuickSort.java`
+- `src/main/java/p2/sorts/TopKSort.java`
 
 ### Word Suggestor:
-- `src/main/java/wordsuggestor/NGramToNextChoicesMap.java`
+- `src/main/java/p2/wordsuggestor/NGramToNextChoicesMap.java`

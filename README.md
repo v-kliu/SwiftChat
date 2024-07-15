@@ -2,7 +2,7 @@
 
 ## Overview
 
-The uMessage Chat Application is designed to implement various data structures and algorithms, which are used to drive word suggestion, spelling correction, and autocompletion within the app. The project covers the following:
+The uMessage Chat Application is designed to implement various data structures and algorithms, which are used to drive word suggestion, spelling correction, and autocompletion within the app. This was built as a major project in CSE 332, Data Structures and Parallelism at the University of Washington Seattle. The project covers the following:
 
 - **Data Structures:** AVLTree, HashTrieMap, ChainingHashTable, MinFourHeap, CircularArrayFIFOQueue, and MoveToFrontList.
 - **Sorting Algorithms:** HeapSort, QuickSort, and TopKSort.

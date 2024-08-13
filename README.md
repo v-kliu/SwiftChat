@@ -1,12 +1,12 @@
-# uMessage Chat Application
+# SwiftChat
 
 ## Overview
 
-The uMessage Chat Application is designed to implement various data structures and algorithms, which are used to drive word suggestion, spelling correction, and autocompletion within the app. This was built as a major project in CSE 332, Data Structures and Parallelism at the University of Washington Seattle. The project covers the following:
+The SwiftChat is designed to implement various data structures and algorithms, which are used to drive word suggestion, spelling correction, and autocompletion within the app. This was built as a major project in CSE 332, Data Structures and Parallelism at the University of Washington Seattle. The project covers the following:
 
 - **Data Structures:** AVLTree, HashTrieMap, ChainingHashTable, MinFourHeap, CircularArrayFIFOQueue, and MoveToFrontList.
 - **Sorting Algorithms:** HeapSort, QuickSort, and TopKSort.
-- **Backend for Chat Application:** These implementations power the backend of uMessage, enhancing word suggestion, spelling correction, and autocompletion features.
+- **Backend for Chat Application:** These implementations power the backend of SwiftChat, enhancing word suggestion, spelling correction, and autocompletion features.
 
 ## Key Features
 
